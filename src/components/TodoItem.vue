@@ -1,10 +1,10 @@
 <template>
   <div class="todo-container w-100">
     <div @click="displayedModal = true" class="todo-item">
-      <div class="taskName">
+      <div class="task-name">
         <p>{{ todo.taskName }}</p>
       </div>
-      <div class="dueDate">
+      <div class="due-date">
         <p>{{ todo.dueDate }}</p>
       </div>
       <div class="status">
@@ -31,7 +31,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <div class="taskName-input w-100 pb-5">
+              <div class="task-name-input w-100 pb-5">
                 <input
                   v-model="taskName"
                   type="text"
@@ -39,11 +39,11 @@
                   placeholder="タスク名を入力してください"
                 />
               </div>
-              <div class="due_date mb-3">
+              <div class="due-date-input mb-3">
                 <label class="mr-5 align-top">期日</label>
                 <input v-model="dueDate" type="date" />
               </div>
-              <div class="task_detail">
+              <div class="task-detail">
                 <label class="mr-5 align-top">詳細</label>
                 <textarea v-model="taskDetail" class="w-100" />
               </div>
@@ -186,18 +186,18 @@ export default Vue.extend({
 .todo-item:hover {
   cursor: pointer;
 }
-.taskName {
+.task-name {
   width: 120px;
   font-size: 12px;
   margin-right: 10px;
   padding-left: 10px;
 }
-.taskName > p {
+.task-name > p {
   height: 100%;
   margin: 0;
   word-wrap: break-word;
 }
-.dueDate {
+.due-date {
   top: 10px;
   position: relative;
   width: 50px;

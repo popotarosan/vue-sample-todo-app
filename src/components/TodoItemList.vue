@@ -1,6 +1,6 @@
 <template>
-  <div class="todoListContainer">
-    <div class="todoadd w-100 mb-3 d-flex justify-content-end">
+  <div class="todo-list-container">
+    <div class="todo-add w-100 mb-3 d-flex justify-content-end">
       <button
         @click="displayedModal = true"
         class=" float-right rounded-circle text-white "
@@ -8,7 +8,7 @@
         +
       </button>
     </div>
-    <div class="todoList d-flex flex-column">
+    <div class="todo-list d-flex flex-column">
       <TodoItem
         v-for="(todo, key) in todoList"
         :key="key"
@@ -36,7 +36,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <div class="taskName-input w-100">
+              <div class="task-name-input w-100">
                 <input
                   v-model="taskName"
                   type="text"
@@ -44,14 +44,14 @@
                   placeholder="タスク名を入力してください"
                 />
               </div>
-              <div class="inputError text-danger" v-if="isdisplayed">
+              <div class="input-error text-danger" v-if="isdisplayed">
                 タスク名を入力してください
               </div>
               <div class="due_date mb-3 pt-4">
                 <label class="mr-5 align-top">期日</label>
                 <input v-model="dueDate" type="date" />
               </div>
-              <div class="task_detail">
+              <div class="task-detail">
                 <label class="mr-5 align-top">詳細</label>
                 <textarea v-model="taskDetail" class="w-100" />
               </div>
@@ -128,13 +128,13 @@ export default Vue.extend({
 })
 </script>
 <style scoped>
-.todoList {
+.todo-list {
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   height: 90%;
 }
-.todoadd > button {
+.todo-add > button {
   width: 30px;
   height: 30px;
   background-color: #00a5dd;
@@ -150,7 +150,7 @@ export default Vue.extend({
 .delete-task-btn {
   font-size: 12px;
 }
-.inputError {
+.input-error {
   font-size: 12px;
 }
 </style>
