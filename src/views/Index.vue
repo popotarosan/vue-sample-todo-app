@@ -1,18 +1,24 @@
 <template>
   <div class="wrapper">
     <header-component class="header" />
-    <div class="content d-flex ">
+    <div class="content d-flex">
       <SidebarComponent class="sidebar" />
-      <TodoItemList class="todo-item-list" :todoList="todoList" />
+      <TodoItemList
+        class="todo-item-list"
+        :todoList="todoList"
+        v-on:task-save-button-click="createTask($event)"
+      />
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue, { PropType } from 'vue'
+import { Todo } from '../../types'
 import TodoItemList from '@/components/TodoItemList.vue'
 import HeaderComponent from '@/components/HeaderComponent.vue'
 import SidebarComponent from '@/components/SidebarComponent.vue'
-export default {
+export default Vue.extend({
   components: {
     TodoItemList,
     HeaderComponent,
@@ -22,14 +28,31 @@ export default {
     return {
       todoList: [
         {
-          id: 1,
-          title: '7時に起きる',
-          isDone: false
+          id: 0,
+          taskName: '',
+          dueDate: '',
+          taskDetail: ''
         }
       ]
     }
+  },
+  created() {
+    var todoListStr = localStorage.getItem('todoList')
+    if (todoListStr) {
+      var todoListObj = JSON.parse(todoListStr)
+      this.todoList = todoListObj
+    }
+  },
+  methods: {
+    createTask(todo: Todo) {
+      todo['dueDate'] = todo['dueDate'].replace(/-/g, '/')
+      const index = this.todoList.length
+      todo['id'] = index + 1
+      this.todoList.push(todo)
+      localStorage.setItem('todoList', JSON.stringify(this.todoList))
+    }
   }
-}
+})
 </script>
 
 <style scoped lang="scss">
@@ -45,24 +68,18 @@ export default {
   width: 100%;
 }
 .todo-item-list {
-  display: -webkit-flex;
-  -webkit-align-items: stretch;
-  align-items: stretch;
-  // text-align: center;
   padding-top: 100px;
   padding-left: 30px;
 }
 .header {
-  // height: 5vh;
   position: relative;
   z-index: 3 !important;
 }
 .sidebar {
-  // position: absolute;
   width: 250px;
   height: 100%;
 }
 .todo-item-list {
-  width: 100%;
+  width: 255px;
 }
 </style>
