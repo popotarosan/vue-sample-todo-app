@@ -13,7 +13,7 @@
         v-for="(todo, key) in todoList"
         :key="key"
         :todo="todo"
-        v-on:todoCreated="createTask($event)"
+        @todoCreated="createTask($event)"
       />
     </div>
     <div v-if="displayedModal">
@@ -30,7 +30,7 @@
                 class="close"
                 data-dismiss="modal"
                 aria-label="Close"
-                v-on:click="displayedModal = false"
+                @click="displayedModal = false"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
