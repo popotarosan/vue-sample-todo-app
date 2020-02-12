@@ -1,13 +1,13 @@
 <template>
   <div class="sidebar d-flex flex-column bg-dark text-white">
     <div
-      v-bind:class="{ selected: isSelectedTodo }"
+      :class="{ selected: isSelectedTodo }"
       class="menu-item p-2 pl-3 text-left"
     >
       <span>TODO</span>
     </div>
     <div
-      v-bind:class="{ selected: isSelectedDone }"
+      :class="{ selected: isSelectedDone }"
       class="menu-item p-2 pl-3 text-left"
     >
       <span>DONE</span>
