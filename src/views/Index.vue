@@ -37,7 +37,7 @@ export default Vue.extend({
     }
   },
   created() {
-    var todoListStr = localStorage.getItem('todoList')
+    const todoListStr = localStorage.getItem('todoList')
     if (todoListStr) {
       var todoListObj = JSON.parse(todoListStr)
       this.todoList = todoListObj
