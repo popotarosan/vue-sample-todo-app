@@ -8,6 +8,7 @@
         :todoList="todoList"
         @task-save-button-click="createTask($event)"
         @task-delete-save-button-click="deleteTask($event)"
+        @task-update-button-click="updateTask($event)"
       />
     </div>
   </div>
@@ -45,6 +46,7 @@ export default Vue.extend({
     } else {
       this.todoList = []
     }
+    localStorage.removeItem('todoList')
   },
   methods: {
     createTask(todo: Todo) {
@@ -58,6 +60,15 @@ export default Vue.extend({
       this.todoList.forEach((todo, index) => {
         if (todo.id === id) {
           this.todoList.splice(index, 1)
+        }
+      })
+      localStorage.setItem('todoList', JSON.stringify(this.todoList))
+    },
+    updateTask(updatedTodo: Todo) {
+      updatedTodo['dueDate'] = updatedTodo['dueDate'].replace(/-/g, '/')
+      this.todoList.forEach((todo, index) => {
+        if (todo.id === updatedTodo.id) {
+          this.todoList.splice(index, 1, updatedTodo)
         }
       })
       localStorage.setItem('todoList', JSON.stringify(this.todoList))
