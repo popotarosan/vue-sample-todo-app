@@ -50,6 +50,7 @@
             </div>
             <div class="modal-footer justify-content-between ">
               <button
+                @click="deleteTask"
                 type="button"
                 class="btn float-left text-danger delete-task-btn"
                 data-dismiss="modal"
@@ -72,6 +73,13 @@
 </template>
 
 <script lang="ts">
+interface Data {
+  id: null | number
+  taskName: string
+  dueDate: string
+  taskDetail: string
+  displayedModal: false
+}
 import Vue, { PropType } from 'vue'
 import { Todo } from '../../types'
 
@@ -83,12 +91,26 @@ export default Vue.extend({
     }
   },
   data() {
-    return {
+    var data: Data = {
       id: null,
-      taskName: null,
-      dueDate: null,
-      taskDetail: null,
+      taskName: '',
+      dueDate: '',
+      taskDetail: '',
       displayedModal: false
+    }
+    return data
+  },
+  created() {
+    this.id = this.todo.id
+    this.taskName = this.todo.taskName
+    this.dueDate = this.todo.dueDate
+    this.taskDetail = this.todo.taskDetail
+  },
+  methods: {
+    deleteTask() {
+      //TodoItemListコンポーネントにemitでイベント伝播
+      this.$emit('task-delete-save-button-click', this.id)
+      this.displayedModal = false
     }
   }
 })

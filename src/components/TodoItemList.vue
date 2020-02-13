@@ -13,7 +13,7 @@
         v-for="(todo, key) in todoList"
         :key="key"
         :todo="todo"
-        @todoCreated="createTask($event)"
+        @task-delete-save-button-click="deleteTask($event)"
       />
     </div>
     <div v-if="displayedModal">
@@ -123,6 +123,9 @@ export default Vue.extend({
       this.taskName = ''
       this.dueDate = ''
       this.taskDetail = ''
+    },
+    deleteTask(id: number) {
+      this.$emit('task-delete-save-button-click', id)
     }
   }
 })

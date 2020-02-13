@@ -6,7 +6,8 @@
       <TodoItemList
         class="todo-item-list"
         :todoList="todoList"
-        v-on:task-save-button-click="createTask($event)"
+        @task-save-button-click="createTask($event)"
+        @task-delete-save-button-click="deleteTask($event)"
       />
     </div>
   </div>
@@ -41,6 +42,8 @@ export default Vue.extend({
     if (todoListStr) {
       var todoListObj = JSON.parse(todoListStr)
       this.todoList = todoListObj
+    } else {
+      this.todoList = []
     }
   },
   methods: {
@@ -49,6 +52,14 @@ export default Vue.extend({
       const index = this.todoList.length
       todo['id'] = index + 1
       this.todoList.push(todo)
+      localStorage.setItem('todoList', JSON.stringify(this.todoList))
+    },
+    deleteTask(id: number) {
+      this.todoList.forEach((todo, index) => {
+        if (todo.id === id) {
+          this.todoList.splice(index, 1)
+        }
+      })
       localStorage.setItem('todoList', JSON.stringify(this.todoList))
     }
   }
