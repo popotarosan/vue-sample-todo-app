@@ -73,6 +73,13 @@
 </template>
 
 <script lang="ts">
+interface Data {
+  id: null | number
+  taskName: string
+  dueDate: string
+  taskDetail: string
+  displayedModal: false
+}
 import Vue, { PropType } from 'vue'
 import { Todo } from '../../types'
 
@@ -84,13 +91,14 @@ export default Vue.extend({
     }
   },
   data() {
-    return {
-      id: 0,
+    var data: Data = {
+      id: null,
       taskName: '',
       dueDate: '',
       taskDetail: '',
       displayedModal: false
     }
+    return data
   },
   created() {
     this.id = this.todo.id
