@@ -8,7 +8,11 @@
         <p>{{ todo.dueDate }}</p>
       </div>
       <div class="status">
-        <input type="checkbox" @click.stop class="checkbox" />
+        <input
+          type="checkbox"
+          @click.stop="changeTaskStatus"
+          class="checkbox"
+        />
       </div>
     </div>
     <div v-if="displayedModal">
@@ -25,13 +29,13 @@
                 class="close"
                 data-dismiss="modal"
                 aria-label="Close"
-                v-on:click="displayedModal = false"
+                @click="updateTask"
               >
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
-              <div class="task-name-input w-100 pb-5">
+              <div class="task-name-input w-100">
                 <input
                   v-model="taskName"
                   type="text"
@@ -39,7 +43,10 @@
                   placeholder="タスク名を入力してください"
                 />
               </div>
-              <div class="due-date-input mb-3">
+              <div class="input-error text-danger" v-if="isDisplayedInpErrMsg">
+                タスク名を入力してください
+              </div>
+              <div class="due-date-input mb-3 pt-4">
                 <label class="mr-5 align-top">期日</label>
                 <input v-model="dueDate" type="date" />
               </div>
@@ -52,16 +59,21 @@
               <button
                 @click="deleteTask"
                 type="button"
-                class="btn float-left text-danger delete-task-btn"
+                class="float-left text-danger delete-task-btn border-0 bg-white"
                 data-dismiss="modal"
               >
                 タスク削除
               </button>
               <button
                 type="button"
-                class="btn text-white float-right save-task-btn"
+                class="float-right finish-task-btn rounded"
+                @click="isDone = !isDone"
+                :class="{
+                  'task-finished': isDone,
+                  'task-not-finished': !isDone
+                }"
               >
-                保存
+                {{ statusText }}
               </button>
             </div>
           </div>
@@ -74,11 +86,13 @@
 
 <script lang="ts">
 interface Data {
-  id: null | number
+  id: number
   taskName: string
   dueDate: string
   taskDetail: string
-  displayedModal: false
+  displayedModal: boolean
+  isDone: boolean
+  isDisplayedInpErrMsg: boolean
 }
 import Vue, { PropType } from 'vue'
 import { Todo } from '../../types'
@@ -92,25 +106,57 @@ export default Vue.extend({
   },
   data() {
     var data: Data = {
-      id: null,
+      id: 0,
       taskName: '',
       dueDate: '',
       taskDetail: '',
-      displayedModal: false
+      isDone: false,
+      displayedModal: false,
+      isDisplayedInpErrMsg: false
     }
     return data
+  },
+  computed: {
+    statusText() {
+      if (this.isDone) {
+        return '✔完了済み'
+      } else {
+        return '✔完了にする'
+      }
+    }
   },
   created() {
     this.id = this.todo.id
     this.taskName = this.todo.taskName
     this.dueDate = this.todo.dueDate
     this.taskDetail = this.todo.taskDetail
+    this.isDone = this.todo.isDone
   },
   methods: {
     deleteTask() {
       //TodoItemListコンポーネントにemitでイベント伝播
       this.$emit('task-delete-save-button-click', this.id)
       this.displayedModal = false
+    },
+    updateTask() {
+      if (this.taskName === '') {
+        this.isDisplayedInpErrMsg = true
+        return
+      }
+      this.isDisplayedInpErrMsg = false
+      const todo: Todo = {
+        id: this.id,
+        taskName: this.taskName,
+        dueDate: this.dueDate,
+        taskDetail: this.taskDetail,
+        isDone: this.isDone
+      }
+      this.displayedModal = false
+      this.$emit('task-update-button-click', todo)
+    },
+    changeTaskStatus() {
+      this.isDone = !this.isDone
+      setTimeout(this.updateTask, 600)
     }
   }
 })
@@ -148,7 +194,7 @@ export default Vue.extend({
   background: #fff;
   -webkit-appearance: none;
   appearance: none;
-  border: solid 2px #00a5dd !important;
+  border: solid 2px #00a5dd;
 }
 .status .checkbox:hover {
   background: #c2e2ec;
@@ -232,10 +278,30 @@ export default Vue.extend({
 .modal {
   display: block;
 }
-.save-task-btn {
-  background-color: #00a5dd !important;
+.task-not-finished {
+  background-color: #fff;
+  color: rgb(187, 187, 187);
+  border: solid 1px rgb(187, 187, 187);
+}
+.task-not-finished:hover {
+  color: #00a5dd;
+  background-color: #daf4fd;
+  border: solid 1px #00a5dd;
 }
 .delete-task-btn {
+  font-size: 12px;
+}
+.task-finished {
+  background-color: #00a5dd;
+  color: white;
+  border: solid 1px #00a5dd;
+}
+.task-finished:hover {
+  background-color: #0085b1;
+  color: white;
+  border: solid 1px #0085b1;
+}
+.input-error {
   font-size: 12px;
 }
 </style>

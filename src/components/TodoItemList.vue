@@ -10,10 +10,11 @@
     </div>
     <div class="todo-list d-flex flex-column">
       <TodoItem
-        v-for="(todo, key) in todoList"
+        v-for="(todo, key) in notDoneTodoList"
         :key="key"
         :todo="todo"
         @task-delete-save-button-click="deleteTask($event)"
+        @task-update-button-click="updateTask($event)"
       />
     </div>
     <div v-if="displayedModal">
@@ -56,18 +57,11 @@
                 <textarea v-model="taskDetail" class="w-100" />
               </div>
             </div>
-            <div class="modal-footer justify-content-between ">
-              <button
-                type="button"
-                class="btn float-left text-danger delete-task-btn"
-                data-dismiss="modal"
-              >
-                タスク削除
-              </button>
+            <div class="modal-footer justify-content-end ">
               <button
                 type="button"
                 v-on:click="createTask"
-                class="btn text-white float-right save-task-btn"
+                class=" text-white float-right save-task-btn rounded border-0 pl-3 pr-3"
               >
                 保存
               </button>
@@ -98,6 +92,18 @@ export default Vue.extend({
       isdisplayed: false
     }
   },
+  computed: {
+    notDoneTodoList() {
+      const notDoneTodoList: Todo[] = []
+      this.todoList.forEach((todo, index) => {
+        if (!todo.isDone) {
+          notDoneTodoList.push(todo)
+        }
+      })
+      return notDoneTodoList
+    }
+  },
+
   props: {
     todoList: {
       type: Array as PropType<Todo[]>,
@@ -126,6 +132,9 @@ export default Vue.extend({
     },
     deleteTask(id: number) {
       this.$emit('task-delete-save-button-click', id)
+    },
+    updateTask(todo: Todo) {
+      this.$emit('task-update-button-click', todo)
     }
   }
 })
@@ -148,7 +157,7 @@ export default Vue.extend({
   display: block;
 }
 .save-task-btn {
-  background-color: #00a5dd !important;
+  background-color: #00a5dd;
 }
 .delete-task-btn {
   font-size: 12px;
