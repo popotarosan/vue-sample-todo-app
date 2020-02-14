@@ -85,7 +85,7 @@ export default Vue.extend({
 .content {
   position: absolute;
   top: 0px;
-  z-index: 1 !important;
+  z-index: 1;
   height: 100%;
   width: 100%;
 }
@@ -95,7 +95,7 @@ export default Vue.extend({
 }
 .header {
   position: relative;
-  z-index: 3 !important;
+  z-index: 3;
 }
 .sidebar {
   width: 250px;

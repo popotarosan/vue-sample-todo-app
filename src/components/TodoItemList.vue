@@ -61,7 +61,7 @@
               <button
                 type="button"
                 v-on:click="createTask"
-                class="btn text-white float-right save-task-btn"
+                class=" text-white float-right save-task-btn rounded border-0 pl-3 pr-3"
               >
                 保存
               </button>
@@ -157,7 +157,7 @@ export default Vue.extend({
   display: block;
 }
 .save-task-btn {
-  background-color: #00a5dd !important;
+  background-color: #00a5dd;
 }
 .delete-task-btn {
   font-size: 12px;

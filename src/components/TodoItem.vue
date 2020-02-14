@@ -59,7 +59,7 @@
               <button
                 @click="deleteTask"
                 type="button"
-                class="btn float-left text-danger delete-task-btn"
+                class="float-left text-danger delete-task-btn border-0 bg-white"
                 data-dismiss="modal"
               >
                 タスク削除
@@ -67,7 +67,7 @@
               <button
                 type="button"
                 class="float-right finish-task-btn rounded"
-                @click="finishTask"
+                @click="isDone = !isDone"
                 :class="{
                   'task-finished': isDone,
                   'task-not-finished': !isDone
@@ -90,7 +90,6 @@ interface Data {
   taskName: string
   dueDate: string
   taskDetail: string
-  statusText: string
   displayedModal: boolean
   isDone: boolean
   isDisplayedInpErrMsg: boolean
@@ -112,11 +111,19 @@ export default Vue.extend({
       dueDate: '',
       taskDetail: '',
       isDone: false,
-      statusText: '✔完了にする',
       displayedModal: false,
       isDisplayedInpErrMsg: false
     }
     return data
+  },
+  computed: {
+    statusText() {
+      if (this.isDone) {
+        return '✔完了済み'
+      } else {
+        return '✔完了にする'
+      }
+    }
   },
   created() {
     this.id = this.todo.id
@@ -130,14 +137,6 @@ export default Vue.extend({
       //TodoItemListコンポーネントにemitでイベント伝播
       this.$emit('task-delete-save-button-click', this.id)
       this.displayedModal = false
-    },
-    finishTask() {
-      this.isDone = !this.isDone
-      if (this.isDone) {
-        this.statusText = '✔完了済み'
-      } else {
-        this.statusText = '✔完了にする'
-      }
     },
     updateTask() {
       if (this.taskName === '') {
@@ -156,7 +155,7 @@ export default Vue.extend({
       this.$emit('task-update-button-click', todo)
     },
     changeTaskStatus() {
-      this.finishTask()
+      this.isDone = !this.isDone
       setTimeout(this.updateTask, 600)
     }
   }
@@ -195,7 +194,7 @@ export default Vue.extend({
   background: #fff;
   -webkit-appearance: none;
   appearance: none;
-  border: solid 2px #00a5dd !important;
+  border: solid 2px #00a5dd;
 }
 .status .checkbox:hover {
   background: #c2e2ec;
@@ -280,27 +279,27 @@ export default Vue.extend({
   display: block;
 }
 .task-not-finished {
-  background-color: #fff !important;
-  color: rgb(187, 187, 187) !important;
+  background-color: #fff;
+  color: rgb(187, 187, 187);
   border: solid 1px rgb(187, 187, 187);
 }
 .task-not-finished:hover {
-  color: #00a5dd !important;
-  background-color: #daf4fd !important;
+  color: #00a5dd;
+  background-color: #daf4fd;
   border: solid 1px #00a5dd;
 }
 .delete-task-btn {
   font-size: 12px;
 }
 .task-finished {
-  background-color: #00a5dd !important;
-  color: white !important;
-  border: solid 1px #00a5dd !important;
+  background-color: #00a5dd;
+  color: white;
+  border: solid 1px #00a5dd;
 }
 .task-finished:hover {
-  background-color: #0085b1 !important;
-  color: white !important;
-  border: solid 1px #0085b1 !important;
+  background-color: #0085b1;
+  color: white;
+  border: solid 1px #0085b1;
 }
 .input-error {
   font-size: 12px;
