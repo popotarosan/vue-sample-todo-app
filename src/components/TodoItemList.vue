@@ -97,20 +97,14 @@ export default Vue.extend({
   },
   computed: {
     filteredTodoList() {
-      const filteredTodoList: Todo[] = []
-      this.todoList.forEach((todo, index) => {
+      return this.todoList.filter((todo: Todo) => {
         if (this.selectedMenu === 'todo') {
-          if (!todo.isDone) {
-            filteredTodoList.push(todo)
-          }
+          return !todo.isDone
         }
         if (this.selectedMenu === 'done') {
-          if (todo.isDone) {
-            filteredTodoList.push(todo)
-          }
+          return todo.isDone
         }
       })
-      return filteredTodoList
     }
   },
 
