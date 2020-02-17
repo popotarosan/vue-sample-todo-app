@@ -26,10 +26,10 @@ describe('Testing TodoItem component', () => {
     expect(beforeisDone).toEqual(!isDone)
   })
 
-  //以下失敗する
-  it('todoItem click should show modal window', () => {
-    const todoItemElement = wrapper.find('.todo-item')
-    todoItemElement.trigger('click')
+  //非同期処理にする
+  it('todoItem click should show modal window', async () => {
+    const todoItemElement = wrapper.find('div.todo-item')
+    await todoItemElement.trigger('click')
     expect(wrapper.contains('.modal')).toBe(true)
   })
 })
