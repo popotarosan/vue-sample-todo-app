@@ -2,13 +2,17 @@
   <div class="wrapper">
     <header-component class="header" />
     <div class="content d-flex">
-      <SidebarComponent class="sidebar" />
+      <SidebarComponent
+        class="sidebar"
+        @menu-change-button-click="changeMenu"
+      />
       <TodoItemList
         class="todo-item-list"
         :todoList="todoList"
         @task-save-button-click="createTask($event)"
         @task-delete-save-button-click="deleteTask($event)"
         @task-update-button-click="updateTask($event)"
+        :selectedMenu="selectedMenu"
       />
     </div>
   </div>
@@ -35,7 +39,8 @@ export default Vue.extend({
           dueDate: '',
           taskDetail: ''
         }
-      ]
+      ],
+      selectedMenu: 'todo'
     }
   },
   created() {
@@ -46,7 +51,6 @@ export default Vue.extend({
     } else {
       this.todoList = []
     }
-    localStorage.removeItem('todoList')
   },
   methods: {
     createTask(todo: Todo) {
@@ -72,6 +76,9 @@ export default Vue.extend({
         }
       })
       localStorage.setItem('todoList', JSON.stringify(this.todoList))
+    },
+    changeMenu(menu: string) {
+      this.selectedMenu = menu
     }
   }
 })
