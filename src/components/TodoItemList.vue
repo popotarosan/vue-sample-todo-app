@@ -1,6 +1,9 @@
 <template>
   <div class="todo-list-container">
-    <div class="todo-add w-100 mb-3 d-flex justify-content-end">
+    <div
+      class="todo-add w-100 mb-3 d-flex justify-content-end"
+      v-if="selectedMenu === 'todo'"
+    >
       <button
         @click="displayedModal = true"
         class=" float-right rounded-circle text-white "
@@ -10,8 +13,8 @@
     </div>
     <div class="todo-list d-flex flex-column">
       <TodoItem
-        v-for="(todo, key) in notDoneTodoList"
-        :key="key"
+        v-for="todo in filteredTodoList"
+        :key="todo.id"
         :todo="todo"
         @task-delete-save-button-click="deleteTask($event)"
         @task-update-button-click="updateTask($event)"
@@ -93,20 +96,25 @@ export default Vue.extend({
     }
   },
   computed: {
-    notDoneTodoList() {
-      const notDoneTodoList: Todo[] = []
-      this.todoList.forEach((todo, index) => {
-        if (!todo.isDone) {
-          notDoneTodoList.push(todo)
+    filteredTodoList() {
+      return this.todoList.filter((todo: Todo) => {
+        if (this.selectedMenu === 'todo') {
+          return !todo.isDone
+        }
+        if (this.selectedMenu === 'done') {
+          return todo.isDone
         }
       })
-      return notDoneTodoList
     }
   },
 
   props: {
     todoList: {
       type: Array as PropType<Todo[]>,
+      required: true
+    },
+    selectedMenu: {
+      type: String,
       required: true
     }
   },

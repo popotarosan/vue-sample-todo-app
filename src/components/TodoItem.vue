@@ -12,6 +12,7 @@
           type="checkbox"
           @click.stop="changeTaskStatus"
           class="checkbox"
+          :checked="todo.isDone"
         />
       </div>
     </div>
