@@ -129,7 +129,7 @@ export default Vue.extend({
   created() {
     this.id = this.todo.id
     this.taskName = this.todo.taskName
-    this.dueDate = this.todo.dueDate
+    this.dueDate = this.todo.dueDate.replace(/\//g, '-')
     this.taskDetail = this.todo.taskDetail
     this.isDone = this.todo.isDone
   },
