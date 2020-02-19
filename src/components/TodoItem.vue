@@ -2,17 +2,17 @@
   <div class="todo-container w-100">
     <div @click="displayedModal = true" class="todo-item">
       <div class="task-name">
-        <p>{{ todo.taskName }}</p>
+        <p>{{ todo && todo.taskName }}</p>
       </div>
       <div class="due-date">
-        <p>{{ todo.dueDate }}</p>
+        <p>{{ todo && todo.dueDate }}</p>
       </div>
       <div class="status">
         <input
           type="checkbox"
           @click.stop="changeTaskStatus"
           class="checkbox"
-          :checked="todo.isDone"
+          :checked="todo && todo.isDone"
         />
       </div>
     </div>
@@ -102,11 +102,11 @@ export default Vue.extend({
   props: {
     todo: {
       type: Object as PropType<Todo>,
-      required: true
+      required: false
     }
   },
-  data() {
-    var data: Data = {
+  data(): Data {
+    return {
       id: 0,
       taskName: '',
       dueDate: '',
@@ -115,7 +115,6 @@ export default Vue.extend({
       displayedModal: false,
       isDisplayedInpErrMsg: false
     }
-    return data
   },
   computed: {
     statusText() {
@@ -126,7 +125,8 @@ export default Vue.extend({
       }
     }
   },
-  created() {
+  mounted() {
+    if (!this.todo) return
     this.id = this.todo.id
     this.taskName = this.todo.taskName
     this.dueDate = this.todo.dueDate.replace(/\//g, '-')
