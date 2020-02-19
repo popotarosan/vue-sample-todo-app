@@ -2,7 +2,6 @@ import { shallowMount } from '@vue/test-utils'
 import TodoItem from '@/components/TodoItem.vue'
 
 let wrapper
-
 beforeEach(() => {
   const todo = {
     id: 0,
