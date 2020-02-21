@@ -2,6 +2,7 @@ import { shallowMount } from '@vue/test-utils'
 import TodoItem from '@/components/TodoItem.vue'
 
 let wrapper
+
 beforeEach(() => {
   const todo = {
     id: 0,
@@ -10,6 +11,7 @@ beforeEach(() => {
     isDone: false,
     taskDetail: 'testDetail'
   }
+
   wrapper = shallowMount(TodoItem, {
     propsData: {
       todo
@@ -19,16 +21,20 @@ beforeEach(() => {
 describe('Testing TodoItem component', () => {
   it('checkbox click should change todo status', () => {
     const beforeisDone = wrapper.vm.isDone
-    //checkboxをクリックする
     const checkbox = wrapper.find('input')
+
     checkbox.trigger('click')
+
     const isDone = wrapper.vm.isDone
+
     expect(beforeisDone).toEqual(!isDone)
   })
   //todoコンポーネントをクリックしたら、モーダルが表示するか
   it('todoItem click should show modal window', async () => {
     const todoItemElement = wrapper.find('.todo-item')
+
     await todoItemElement.trigger('click')
+
     expect(wrapper.contains('.modal')).toBe(true)
   })
 
@@ -36,21 +42,18 @@ describe('Testing TodoItem component', () => {
   it('modal window display props properly', async () => {
     //モーダルを開く
     const todoItemElement = wrapper.find('.todo-item')
+
     await todoItemElement.trigger('click')
+
     expect(wrapper.find('.task-name-input > input').element.value).toBe(
       wrapper.vm.todo.taskName
     )
-    console.log(wrapper.find('.task-name-input > input').element.value)
-
-    console.log(wrapper.find('.task-detail > textarea').element.value)
     expect(
       wrapper.find('.finish-task-btn').contains('.task-not-finished')
     ).toBe(true)
-
     expect(wrapper.find('.due-date-input > input').element.value).toBe(
       wrapper.vm.todo.dueDate
     )
-    console.log(wrapper.find('.due-date-input > input').element.value)
     expect(wrapper.find('.task-detail > textarea').element.value).toBe(
       wrapper.vm.todo.taskDetail
     )
@@ -59,9 +62,13 @@ describe('Testing TodoItem component', () => {
   //deleteボタンをクリックしたら、期待される引数でイベントが親コンポーネントにemitされる
   it('delete button click should emit event', async () => {
     const todoItemElement = wrapper.find('.todo-item')
+
     await todoItemElement.trigger('click')
+
     const deleteBtn = wrapper.find('.delete-task-btn')
+
     await deleteBtn.trigger('click')
+
     expect(wrapper.emitted()['task-delete-save-button-click'][0][0]).toEqual(
       wrapper.vm.todo.id
     )
@@ -78,6 +85,7 @@ describe('Testing TodoItem component', () => {
     }
     //モーダルを開く
     const todoItemElement = wrapper.find('.todo-item')
+
     await todoItemElement.trigger('click')
     //inputを変更する
     wrapper.find('.task-name-input > input').setValue(updateTodo.taskName)
@@ -85,9 +93,13 @@ describe('Testing TodoItem component', () => {
     wrapper.find('.task-detail > textarea').setValue(updateTodo.taskDetail)
     //タスクステータスを切り替える
     const finishBtn = wrapper.find('.finish-task-btn')
+
     await finishBtn.trigger('click')
+
     const updateBtn = wrapper.find('.close')
+
     await updateBtn.trigger('click')
+
     expect(wrapper.emitted()['task-update-button-click'][0][0]).toEqual(
       updateTodo
     )

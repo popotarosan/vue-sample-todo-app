@@ -41,27 +41,48 @@ describe('Testing TodoItemList component', () => {
   //selectedMenuがtodo時に、追加ボタンクリックで、モーダル表示
   it('add-button click should display modal', async () => {
     const addButton = wrapper.find('.todo-add > button')
+
     await addButton.trigger('click')
+
     expect(wrapper.contains('.modal')).toBe(true)
   })
   //新規作成画面の保存ボタンで親コンポーネントにイベントをemit
   it('save-button click should emit event', async () => {
+    const addTodo = {
+      id: 0,
+      isDone: false,
+      taskName: 'newTask',
+      dueDate: '2020-02-11',
+      taskDetail: 'newTaskDetail'
+    }
     const addButton = wrapper.find('.todo-add > button')
+
     await addButton.trigger('click')
-    wrapper.find('.task-name-input > input').setValue('newTask')
-    wrapper.find('.due_date > input').setValue('2020-02-11')
-    wrapper.find('.task-detail > textarea').setValue('newTaskDetail.')
+
+    wrapper.find('.task-name-input > input').setValue(addTodo.taskName)
+    wrapper.find('.due_date > input').setValue(addTodo.dueDate)
+    wrapper.find('.task-detail > textarea').setValue(addTodo.taskDetail)
+
     const saveButton = wrapper.find('.save-task-btn')
+
     await saveButton.trigger('click')
-    console.log(wrapper.emitted())
+
+    expect(wrapper.emitted()['task-save-button-click'][0][0]).toMatchObject(
+      addTodo
+    )
   })
   //新規作成画面で、タスク名を設定せずに保存ボタン時に、エラー表示
   it('save-button click without filling in the task name should display alert', async () => {
     const addButton = wrapper.find('.todo-add > button')
+
     await addButton.trigger('click')
+
     expect(wrapper.contains('.input-error')).toBe(false)
+
     const saveButton = wrapper.find('.save-task-btn')
+
     await saveButton.trigger('click')
+
     expect(wrapper.contains('.input-error')).toBe(true)
   })
   //受け取ったtodoListに応じて、TodoItemをレンダリングする
@@ -72,7 +93,9 @@ describe('Testing TodoItemList component', () => {
   it('change selectedMenu should display TodoItem properly', async () => {
     wrapper.setProps({ selectedMenu: 'todo' })
     expect(wrapper.findAll(TodoItem).length).toBe(2)
+
     await wrapper.setProps({ selectedMenu: 'done' })
+
     expect(wrapper.findAll(TodoItem).length).toBe(1)
   })
 })

@@ -34,8 +34,6 @@ beforeEach(() => {
 describe('Testing Index component', () => {
   //selectedMenuがtodo時に、追加ボタンクリックで、モーダル表示
   it('todoList of data should be match localStorage value', async () => {
-    console.log(wrapper.vm.todoList[0].id)
-    console.log(localStorage.getItem('todoList'))
     expect(wrapper.vm.todoList).toMatchObject(
       JSON.parse(localStorage.getItem('todoList'))
     )
