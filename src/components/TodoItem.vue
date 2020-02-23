@@ -135,7 +135,7 @@ export default Vue.extend({
   },
   methods: {
     deleteTask() {
-      //TodoItemListコンポーネントにemitでイベント伝播
+      //TodoItemListコンポーネントにemitでイベント伝播する
       this.$emit('task-delete-save-button-click', this.id)
       this.displayedModal = false
     },
