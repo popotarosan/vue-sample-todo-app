@@ -106,7 +106,7 @@ describe('Testing TodoItem component', () => {
     expect(wrapper.find('.task-name > p').text()).toBe(wrapper.vm.todo.taskName)
     expect(wrapper.find('.due-date > p').text()).toBe(wrapper.vm.todo.dueDate)
     expect(wrapper.find('.checkbox').element.checked).toBe(
-      !wrapper.vm.todo.isDone
+      wrapper.vm.todo.isDone
     )
   })
 })
